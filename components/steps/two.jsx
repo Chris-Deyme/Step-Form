@@ -9,6 +9,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Separator } from "../ui/separator";
+import AsyncSelect from "react-select/async";
+import Select from "react-select";
+import { countries } from "./options/countries";
+import { toast } from "sonner";
 
 export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
   const [errors, setErrors] = useState([]);
@@ -20,6 +24,31 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: newValue,
+    }));
+  };
+
+  const handleCountryChange = (selectedOption) => {
+    const isFrance = selectedOption.value === "France";
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      paysNaissance: selectedOption,
+      codePostalNaissance: isFrance ? prevFormData.codePostalNaissance : "99",
+    }));
+  };
+
+  const handleAddressChange = (selectedOption) => {
+    const addressDetails = {
+      adresse: selectedOption.details.name,
+      ville: selectedOption.details.city,
+      codePostal: selectedOption.details.postcode,
+      x: selectedOption.details.x,
+      y: selectedOption.details.y,
+    };
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ...addressDetails,
     }));
   };
 
@@ -72,7 +101,8 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
     }
 
     if (dateNaissance && calculateAge(dateNaissance) < 18) {
-      errors.push("Le souscripteur doit avoir au moins 18 ans.");
+      toast("Le souscripteur doit être majeur.");
+      return;
     }
 
     setErrors(errors);
@@ -93,10 +123,29 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
     { value: "Non renseigné", label: "Non renseigné" },
   ];
 
-  const paysOptions = [
-    { value: "France", label: "France" },
-    // Ajoutez ici les autres pays si nécessaire
-  ];
+  const loadCountryOptions = async (inputValue) => {
+    return countries.filter((country) =>
+      country.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+  };
+
+  const loadAddressOptions = async (inputValue) => {
+    if (inputValue.length < 1) return [];
+    try {
+      const response = await fetch(
+        `https://api-adresse.data.gouv.fr/search/?q=${inputValue}&limit=5`
+      );
+      const json = await response.json();
+      return json.features.map((feature) => ({
+        label: feature.properties.label,
+        value: feature.properties.label,
+        details: feature.properties,
+      }));
+    } catch (error) {
+      console.error("Erreur lors du chargement des données : ", error);
+      return [];
+    }
+  };
 
   return (
     <motion.form
@@ -221,20 +270,16 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
             >
               Pays de naissance :
             </label>
-            <select
-              name="paysNaissance"
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadCountryOptions}
+              defaultOptions
+              onChange={handleCountryChange}
               value={formData.paysNaissance}
-              onChange={handleInputChange}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="pt-[2px]"
+              placeholder="Sélectionner un pays"
               required
-            >
-              <option value="">Choisir</option>
-              {paysOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div>
             <label
@@ -267,6 +312,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Code postal de naissance"
+              disabled={formData.paysNaissance?.value !== "France"}
               required
             />
           </div>
@@ -274,38 +320,42 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
 
         <h3 className="mb-4 text-2xl font-semibold">Votre adresse</h3>
         <Separator className="mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
+
+        <AsyncSelect
+          cacheOptions
+          loadOptions={loadAddressOptions}
+          defaultOptions
+          className="w-full my-7"
+          onChange={handleAddressChange}
+          placeholder="Entrez une adresse..."
+        />
+
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
-            <label
-              htmlFor="adresse"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Adresse :
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Adresse:
             </label>
             <input
-              name="adresse"
               type="text"
+              name="adresse"
               value={formData.adresse}
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Adresse"
+              placeholder="Numéro et rue"
               required
             />
           </div>
           <div>
-            <label
-              htmlFor="codePostal"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Code postal :
             </label>
             <input
-              name="codePostal"
               type="text"
+              name="codePostal"
               value={formData.codePostal}
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Code postal"
+              placeholder="Code Postal"
               required
             />
           </div>
@@ -316,11 +366,12 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="ville"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Ville :
+              Ville
             </label>
             <input
-              name="ville"
               type="text"
+              id="ville"
+              name="ville"
               value={formData.ville}
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -333,11 +384,12 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="telephone"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Téléphone :
+              Téléphone
             </label>
             <input
-              name="telephone"
               type="text"
+              id="telephone"
+              name="telephone"
               value={formData.telephone}
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -348,7 +400,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
         </div>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Parrainage</AccordionTrigger>
+            <AccordionTrigger chevronColor="black">Parrainage</AccordionTrigger>
             <AccordionContent>
               <div className="grid gap-2 mb-2 md:grid-cols-1">
                 <div className="flex items-center mb-4">

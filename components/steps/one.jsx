@@ -26,6 +26,10 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/multiselect";
+import TimePicker from "rc-time-picker";
+import moment from "moment";
+import "rc-time-picker/assets/index.css";
+import { toast } from "sonner";
 
 export const StepOne = ({ onNext, formData, setFormData }) => {
   const initialStudentState = {
@@ -55,8 +59,8 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
 
   useEffect(() => {
-    if (students.length > 0) {
-      setExpandedAccordionIndex(students.length - 1);
+    if (formData.students.length > 0) {
+      setExpandedAccordionIndex(formData.students.length - 1);
     }
   }, [students]);
 
@@ -108,12 +112,19 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     });
   };
 
-  const updateStudent = (index, updatedStudent) => {
+  const updateStudent = (
+    index,
+    updatedStudent,
+    accordionIndex = expandedAccordionIndex
+  ) => {
     setFormData((prevFormData) => {
       const updatedStudents = [...prevFormData.students];
       updatedStudents[index] = { ...updatedStudents[index], ...updatedStudent };
       return { ...prevFormData, students: updatedStudents };
     });
+
+    console.log(accordionIndex);
+    setExpandedAccordionIndex(accordionIndex);
   };
 
   const removeStudent = (index) => {
@@ -162,41 +173,35 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
       x: selectedOption.details.x,
       y: selectedOption.details.y,
     };
-    updateStudent(index, addressDetails);
+
+    // Preserve the accordion state by setting the expanded index
+    updateStudent(index, addressDetails, index);
   };
 
   const addDisponibilite = (index, jour, debut, fin) => {
     if (!jour) {
-      setDisponibiliteError("Veuillez sélectionner un jour.");
+      toast("Veuillez sélectionner un jour.");
       return;
     }
     if (debut >= fin) {
-      setDisponibiliteError(
-        "L'heure de fin doit être postérieure à l'heure de début."
-      );
+      toast("L'heure de fin doit être postérieure à l'heure de début.");
       return;
     }
     const debutHeure = parseInt(debut.split(":")[0]);
     if (debutHeure < 8 || debutHeure > 22) {
-      setDisponibiliteError(
-        "L'heure de début doit être comprise entre 8h et 22h."
-      );
+      toast("L'heure de début doit être comprise entre 8h et 22h.");
       return;
     }
     const finHeure = parseInt(fin.split(":")[0]);
     if (finHeure > 22) {
-      setDisponibiliteError(
-        "L'heure de fin ne doit pas être postérieure à 22h."
-      );
+      toast("L'heure de fin ne doit pas être postérieure à 22h.");
       return;
     }
     const debutMinutes = parseInt(debut.split(":")[1]);
     const finMinutes = parseInt(fin.split(":")[1]);
     const duree = finHeure * 60 + finMinutes - (debutHeure * 60 + debutMinutes);
     if (duree < 60) {
-      setDisponibiliteError(
-        "La durée de disponibilité doit être d'au moins 1 heure."
-      );
+      toast("La durée de disponibilité doit être d'au moins 1 heure.");
       return;
     }
 
@@ -216,7 +221,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     });
 
     if (conflits) {
-      setDisponibiliteError(
+      toast(
         "Cette disponibilité se chevauche avec une autre disponibilité existante."
       );
       return;
@@ -228,7 +233,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     );
 
     if (existingDisponibilite) {
-      setDisponibiliteError("Cette disponibilité existe déjà.");
+      toast("Cette disponibilité existe déjà.");
       return;
     }
 
@@ -240,7 +245,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
       ],
     });
 
-    setDisponibiliteError("");
+    toast("");
   };
 
   const removeDisponibilite = (studentIndex, dispoIndex) => {
@@ -257,9 +262,11 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     fin: "",
   });
 
-  const handleDisponibiliteChange = (e) => {
-    const { name, value } = e.target;
-    setTempDisponibilite((prev) => ({ ...prev, [name]: value }));
+  const handleDisponibiliteChange = (name, value) => {
+    const timeString = value.format("HH:mm");
+
+    console.log("wesh", timeString);
+    setTempDisponibilite((prev) => ({ ...prev, [name]: timeString }));
   };
 
   const instrumentsOptions = [
@@ -306,7 +313,6 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     { field: "codePostal", label: "Code postal" },
     { field: "ville", label: "Ville" },
     { field: "telephone", label: "Téléphone" },
-    // Add other fields as necessary
   ];
 
   const validateStudents = () => {
@@ -332,10 +338,27 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
     if (missingFields.length === 0) {
       onNext(e);
     } else {
-      alert(
+      toast(
         `Veuillez remplir les champs suivants: ${missingFields.join(", ")}`
       );
     }
+  };
+
+  const disabledHours = () => {
+    const hours = [];
+    for (let i = 0; i < 24; i++) {
+      if (i < 8 || i > 22) {
+        hours.push(i);
+      }
+    }
+    return hours;
+  };
+
+  const disabledMinutes = (selectedHour) => {
+    if (selectedHour === 22) {
+      return [15, 30, 45]; // Assuming you want to disable these minutes for the 22:00 hour
+    }
+    return [];
   };
 
   return (
@@ -347,9 +370,18 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
       transition={{ duration: 0.5 }}
     >
       <div className="p-4 bg-white rounded-lg md:w-4/5 lg:w-1/2 xl:w-1/2 w-4/5 mx-auto">
-        <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-          Projet élève
-        </h2>
+        <div className="flex w-full justify-between">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+            Projet élève
+          </h2>
+          <Button
+            onClick={addStudent}
+            className="shadow-md rounded-lg bg-white text-[#752466] border-2 border-[#752466] transition-transform transform-gpu hover:bg-white hover:scale-105"
+          >
+            <FaUserPlus className="mr-2" />
+            Ajouter Élève
+          </Button>
+        </div>
 
         <div className="shadow-md rounded-lg bg-[#752466] mx-auto">
           {formData.students.map((student, index) => (
@@ -357,6 +389,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
               key={index}
               type="single"
               collapsible
+              defaultValue={String(index)}
               value={
                 expandedAccordionIndex !== null
                   ? String(expandedAccordionIndex)
@@ -369,7 +402,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
               }
             >
               <AccordionItem value={String(index)}>
-                <AccordionTrigger className="px-[1rem]">
+                <AccordionTrigger chevronColor="white" className="px-[1rem]">
                   <div className="flex items-center">
                     <span className="mr-2 text-1xl font-semibold text-white">
                       {student.prenom
@@ -611,19 +644,34 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                     </h3>
                     <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
 
+                    <AsyncSelect
+                      cacheOptions
+                      loadOptions={loadAddressOptions}
+                      defaultOptions
+                      className="w-full my-7 "
+                      onChange={(selectedOption) =>
+                        handleAddressChange(index, selectedOption)
+                      }
+                      placeholder="Entrez une adresse..."
+                    />
+
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                       <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                           Adresse:
                         </label>
-                        <AsyncSelect
-                          cacheOptions
-                          loadOptions={loadAddressOptions}
-                          defaultOptions
-                          onChange={(selectedOption) =>
-                            handleAddressChange(index, selectedOption)
+                        <input
+                          type="addressName"
+                          id="addressName"
+                          name="addressName"
+                          disabled
+                          value={student.adresse}
+                          onChange={(e) =>
+                            updateStudent(index, { adresse: e.target.value })
                           }
-                          placeholder="Entrez une adresse..."
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="Numéro et rue"
+                          required
                         />
                       </div>
                       <div>
@@ -634,6 +682,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           type="codePostal"
                           id="codePostal"
                           name="codePostal"
+                          disabled
                           value={student.codePostal}
                           onChange={(e) =>
                             updateStudent(index, { codePostal: e.target.value })
@@ -656,6 +705,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           type="text"
                           id="ville"
                           name="ville"
+                          disabled
                           value={student.ville}
                           onChange={(e) =>
                             updateStudent(index, { ville: e.target.value })
@@ -733,7 +783,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                         >
                           Heure de début:
                         </label>
-                        <input
+                        {/* <input
                           type="time"
                           id="debut"
                           name="debut"
@@ -743,7 +793,18 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           max="22:00"
                           step="900" // 15 minutes in seconds
                           placeholder="Heure de début"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="
+                          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        /> */}
+                        <TimePicker
+                          defaultValue={moment()}
+                          onChange={(value) =>
+                            handleDisponibiliteChange("debut", value)
+                          }
+                          showSecond={false}
+                          minuteStep={15}
+                          disabledHours={disabledHours}
+                          disabledMinutes={disabledMinutes}
                         />
                       </div>
                       <div>
@@ -753,14 +814,15 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                         >
                           Heure de fin:
                         </label>
-                        <input
-                          type="time"
-                          id="fin"
-                          name="fin"
-                          value={tempDisponibilite.fin}
-                          onChange={handleDisponibiliteChange}
-                          placeholder="Heure de fin"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <TimePicker
+                          defaultValue={moment()}
+                          onChange={(value) =>
+                            handleDisponibiliteChange("fin", value)
+                          }
+                          showSecond={false}
+                          minuteStep={15}
+                          disabledHours={disabledHours}
+                          disabledMinutes={disabledMinutes}
                         />
                       </div>
                       <div className="flex items-center">
@@ -781,11 +843,6 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                       </div>
                     </div>
 
-                    {disponibiliteError && (
-                      <div className="grid gap-6 mb-6 md:grid-cols-1">
-                        {disponibiliteError}
-                      </div>
-                    )}
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                       {student.disponibilites.map((dispo, dispoIndex) => (
                         <span
@@ -842,14 +899,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
           ))}
         </div>
         <div className="grid gap-6 m-6 md:grid-cols-1">
-          <div className="flex justify-between">
-            <Button
-              onClick={addStudent}
-              className="shadow-md rounded-lg bg-white text-[#752466] border-2 border-[#752466] transition-transform transform-gpu hover:bg-white hover:scale-105"
-            >
-              <FaUserPlus className="mr-2" />
-              Ajouter Élève
-            </Button>
+          <div className="flex w-full justify-end">
             <Button
               onClick={handleNextStep}
               className="shadow-md rounded-lg bg-[#752466] transition-transform transform-gpu hover:bg-[#752466] hover:scale-105"

@@ -13,17 +13,26 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
     }));
   };
 
+  console.log("eh", formData);
+
   const calculerPrix = (prix) => {
     return formData.creditImpot ? prix * 2 : prix;
   };
 
-  const handlePayment = (formule, parHeure) => {
+  const handlePayment = (
+    formule,
+    parHeure,
+    defaultChoixFormule,
+    defaultPrix
+  ) => {
     return (e) => {
       e.preventDefault();
       setFormData((prevFormData) => ({
         ...prevFormData,
         formule,
-        parHeure: parHeure,
+        parHeure,
+        choixFormule: prevFormData.choixFormule || defaultChoixFormule,
+        prix: prevFormData.prix || defaultPrix,
       }));
       onNext(e);
     };
@@ -92,7 +101,7 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
               </h3>
               <div className="flex justify-center items-baseline my-8">
                 <span className="mr-2 text-5xl font-extrabold">
-                  {calculerPrix(30)}€
+                  {calculerPrix(30)}€{!formData.creditImpot && "*"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">/heure</span>
               </div>
@@ -139,7 +148,12 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
                   </option>
                 </select>
                 <Button
-                  onClick={handlePayment("Sans engagement", calculerPrix(30))}
+                  onClick={handlePayment(
+                    "Sans engagement",
+                    calculerPrix(30),
+                    "2h/mois",
+                    calculerPrix(60)
+                  )}
                   className="shadow-md rounded-lg bg-[#0072BA] mx-auto transition-transform transform-gpu hover:bg-[#0072BA] hover:scale-105"
                 >
                   Choisir
@@ -160,7 +174,7 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
                 </h3>
                 <div className="flex justify-center items-baseline my-8">
                   <span className="mr-2 text-5xl font-extrabold">
-                    {calculerPrix(25)}€
+                    {calculerPrix(25)}€{!formData.creditImpot && "*"}
                   </span>
                   <span className="text-gray-500 dark:text-gray-400">
                     /heure
@@ -211,7 +225,9 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
                   <Button
                     onClick={handlePayment(
                       "Abonnement 12 mois",
-                      calculerPrix(25)
+                      calculerPrix(25),
+                      "2h/mois",
+                      calculerPrix(50)
                     )}
                     className="shadow-md rounded-lg bg-[#F25C05] mx-auto transition-transform transform-gpu hover:bg-[#0072BA] hover:scale-105"
                   >
@@ -228,7 +244,7 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
               </h3>
               <div className="flex justify-center items-baseline my-8">
                 <span className="mr-2 text-5xl font-extrabold">
-                  {calculerPrix(25)}€
+                  {calculerPrix(25)}€{!formData.creditImpot && "*"}
                 </span>
                 <span className="text-gray-500 dark:text-gray-400">/heure</span>
               </div>
@@ -278,7 +294,12 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
                   </option>
                 </select>
                 <Button
-                  onClick={handlePayment("Pack", calculerPrix(25))}
+                  onClick={handlePayment(
+                    "Pack",
+                    calculerPrix(25),
+                    "Pack 10h",
+                    calculerPrix(250)
+                  )}
                   className="shadow-md rounded-lg bg-[#752466] mx-auto transition-transform transform-gpu hover:bg-[#0072BA] hover:scale-105"
                 >
                   Choisir
@@ -294,13 +315,43 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
             >
               Précédent
             </Button>
-            <Button
-              type="submit"
-              className="shadow-md rounded-lg bg-[#752466] mx-auto transition-transform transform-gpu hover:bg-[#752466] hover:scale-105"
-            >
-              Suivant
-            </Button>
           </div>
+          {!formData.creditImpot && (
+            <p className="text-sm mt-7 text-gray-500 w-full  dark:text-gray-400">
+              <span className="font-bold">
+                *Exemples avec avance immédiate de crédit d&apos;impôts.
+              </span>
+              <br />
+              <br />
+              Fasiladom est un organisme de services à la personne déclaré en
+              tant que mandataire dans le cadre des dispositions des articles
+              L7232-6 et L7233-1 du code du travail. Ces propositions restent à
+              définir, selon votre profil et vos souhaits, auprès de nos
+              équipes. Les provisions versées permettent la rémunération de
+              votre professeur à domicile, le remboursement de ses frais
+              professionnels, le paiement des charges sociales et des frais de
+              mandat. Fasiladom bénéficie de l&apos;Agrément National de Service
+              à la Personne SAP492800016 et est habilitée par l&apos;URSSAF pour
+              gérer en votre nom l&apos;avance immédiate de votre crédit
+              d&apos;impôt. Les montants indiqués prennent en compte ce
+              dispositif et correspondent donc à la part qui reste à votre
+              charge. L&apos;URSSAF versera directement à Fasiladom la part
+              prise en charge par l&apos;État. Pour bénéficier de ce service, il
+              est nécessaire d&apos;avoir déjà effectué une déclaration de
+              revenus et donc d&apos;être connu des services fiscaux, et
+              d&apos;être à jour du paiement de votre impôt. Pour les personnes
+              non éligibles, ne souhaitant pas bénéficier de l&apos;avance
+              immédiate, ou encore voulant régler avec des CESU préfinancés,
+              nous pouvons proposer les mêmes formules que celles indiquées.
+              Toutefois, il vous appartiendra alors de verser à Fasiladom la
+              totalité du coût (voir exemples de formules sans l&apos;avance
+              immédiate de crédit d&apos;impôts ci-après), vous bénéficierez
+              également du crédit d&apos;impôts de 50%, mais par le biais de
+              votre déclaration annuelle d&apos;impôts sur le revenu. Nous
+              restons à votre disposition pour étudier avec vous la formule qui
+              est la mieux adaptée à votre situation et votre projet.
+            </p>
+          )}
         </div>
       </section>
     </motion.div>
