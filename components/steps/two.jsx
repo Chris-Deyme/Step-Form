@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/accordion";
 import { Separator } from "../ui/separator";
 import AsyncSelect from "react-select/async";
+import { toast } from "sonner";
 import Select from "react-select";
 import { countries } from "./options/countries";
-import { toast } from "sonner";
 
 export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
   const [errors, setErrors] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -117,6 +118,32 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
     }
   };
 
+  const handleRadioChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleStudentSelect = (student) => {
+    if (selectedOption === "sameAddress") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        adresse: student.adresse,
+        codePostal: student.codePostal,
+        ville: student.ville,
+      }));
+    } else if (selectedOption === "sameIdentity") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        civilite: student.genre,
+        nom: student.nom,
+        prenom: student.prenom,
+        dateNaissance: student.dateNaissance,
+        adresse: student.adresse,
+        codePostal: student.codePostal,
+        ville: student.ville,
+      }));
+    }
+  };
+
   const civiliteOptions = [
     { value: "Monsieur", label: "Monsieur" },
     { value: "Madame", label: "Madame" },
@@ -167,6 +194,71 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
         </p>
         <h3 className="mb-4 text-2xl font-semibold">Votre identité</h3>
         <Separator className="mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
+
+        <div className="mb-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Choisissez une option:
+          </label>
+          <div className="flex items-center mb-2">
+            <input
+              type="radio"
+              id="sameAddress"
+              name="identityOption"
+              value="sameAddress"
+              checked={selectedOption === "sameAddress"}
+              onChange={handleRadioChange}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="sameAddress"
+              className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Même adresse que l'élève ?
+            </label>
+          </div>
+          <div className="flex items-center mb-4">
+            <input
+              type="radio"
+              id="sameIdentity"
+              name="identityOption"
+              value="sameIdentity"
+              checked={selectedOption === "sameIdentity"}
+              onChange={handleRadioChange}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="sameIdentity"
+              className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Je suis l'élève?
+            </label>
+          </div>
+        </div>
+
+        {selectedOption && (
+          <div className="mb-6 flex items-center gap-5">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Sélectionnez un étudiant :
+            </label>
+            {formData.students.map((student, index) => (
+              <div
+                key={index}
+                className="cursor-pointer mb-2 p-2 border border-gray-300 rounded-lg hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                onClick={() => handleStudentSelect(student)}
+              >
+                {selectedOption === "sameAddress" ? (
+                  <>
+                    <p>{student.prenom}</p>
+                  </>
+                ) : (
+                  <>
+                    <p>{student.prenom}</p>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="grid gap-6 mb-6 md:grid-cols-3">
           <div>

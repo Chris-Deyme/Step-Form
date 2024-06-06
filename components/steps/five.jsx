@@ -11,7 +11,7 @@ import { Pacifico } from "next/font/google";
 export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
   return (
     <>
-     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+      <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
         <div className="mx-auto max-w-2xl px-4 2xl:px-0">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-2">
             Il ne vous reste plus qu’à signer vos documents
@@ -108,7 +108,9 @@ export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
             <dl className="sm:flex items-center justify-between gap-4">
               Vous avez choisi le forfait suivant:
               <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
-                {formData.formule ==="Pack" ? "À la demande" : formData.formule}
+                {formData.formule === "Pack"
+                  ? "À la demande"
+                  : formData.formule}
                 <br />
                 {formData.parHeure}€/heure
                 <br />
@@ -118,7 +120,7 @@ export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
                 ) : (
                   <p>Sans avance du crédit d'impôts</p>
                 )}
-                <div className="flex mt-3">
+                {/* <div className="flex mt-3">
                   <p className="font-bold mr-2">Total:</p>
                   <p>
                     {formData.formule === "Pack" ||
@@ -127,7 +129,7 @@ export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
                       : formData.prix * 12}{" "}
                     €
                   </p>
-                </div>
+                </div> */}
               </dt>
             </dl>
             <div className="flex justify-end mt-4">
@@ -143,7 +145,6 @@ export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
           </div>
         </div>
       </section>
-     
     </>
   );
 };
