@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { FaTrash, FaUserPlus } from "react-icons/fa";
 import AsyncSelect from "react-select/async";
@@ -12,11 +11,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
   MultiSelector,
@@ -372,15 +366,8 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
       <div className="p-4 bg-white rounded-lg md:w-4/5 lg:w-1/2 xl:w-1/2 w-4/5 mx-auto">
         <div className="flex w-full justify-between">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Projet élève
+            Projet élève(s)
           </h2>
-          <Button
-            onClick={addStudent}
-            className="shadow-md rounded-lg bg-white text-[#752466] border-2 border-[#752466] transition-transform transform-gpu hover:bg-white hover:scale-105"
-          >
-            <FaUserPlus className="mr-2" />
-            Ajouter Élève
-          </Button>
         </div>
 
         <div className="shadow-md rounded-lg bg-[#752466] mx-auto">
@@ -797,7 +784,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         /> */}
                         <TimePicker
-                          defaultValue={moment()}
+                          defaultValue={moment('00:00', 'HH:mm')}
                           onChange={(value) =>
                             handleDisponibiliteChange("debut", value)
                           }
@@ -815,7 +802,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           Heure de fin:
                         </label>
                         <TimePicker
-                          defaultValue={moment()}
+                          defaultValue={moment('00:00', 'HH:mm')}
                           onChange={(value) =>
                             handleDisponibiliteChange("fin", value)
                           }
@@ -897,7 +884,17 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
               </AccordionItem>
             </Accordion>
           ))}
+          
         </div>
+        <div className="flex justify-center gap-6 m-6 ">
+        <Button
+            onClick={addStudent}
+            className="shadow-md rounded-lg bg-white text-[#752466] border-2 border-[#752466] transition-transform transform-gpu hover:bg-white hover:scale-105"
+          >
+            <FaUserPlus className="mr-2" />
+            Ajouter un autre élève
+          </Button>
+          </div>
         <div className="grid gap-6 m-6 md:grid-cols-1">
           <div className="flex w-full justify-end">
             <Button

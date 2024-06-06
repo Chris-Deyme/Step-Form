@@ -97,7 +97,7 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
             {/* Offre Starter */}
             <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
               <h3 className="mb-4 text-2xl text-[#0072BA] font-semibold">
-                SANS ENGAGEMENT
+                À LA CARTE
               </h3>
               <div className="flex justify-center items-baseline my-8">
                 <span className="mr-2 text-5xl font-extrabold">
@@ -161,6 +161,76 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
               </div>
             </div>
 
+
+            {/* Offre Enterprise */}
+            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+              <h3 className="mb-4 text-2xl text-[#752466] font-semibold">
+                PACKS
+              </h3>
+              <div className="flex justify-center items-baseline my-8">
+                <span className="mr-2 text-5xl font-extrabold">
+                  {calculerPrix(25)}€{!formData.creditImpot && "*"}
+                </span>
+                <span className="text-gray-500 dark:text-gray-400">/heure</span>
+              </div>
+              <Separator className=" mb-8 border-2 border-[#752466] bg-[#752466]" />
+              {/* Liste des fonctionnalités */}
+              <ul role="list" className="mb-8 space-y-4 text-left">
+                <li className="flex items-center space-x-3">
+                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
+                  <span>Fréquence libre</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
+                  <span>Heures valables 2 ans</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
+                  <span>Pas de frais d’inscription</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
+                  <span>Accès imusic-school offert</span>
+                </li>
+              </ul>
+              <div className="grid gap-6 mb-6 md:grid-cols-1">
+                <select
+                  name="choixFormule"
+                  onChange={handleInputChange}
+                  className="bg-gray-50 border-2 border-[#752466] text-gray-900 text-sm rounded-lg focus:ring-[#752466] focus:border-[#752466] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#752466] dark:focus:border-[#752466]"
+                >
+                  <option value={`Pack 10h - ${calculerPrix(250)}€`}>
+                    Pack 10h - {calculerPrix(250)}€
+                  </option>
+                  <option
+                    value={`Pack 20h + 1h offerte - ${calculerPrix(500)}€`}
+                  >
+                    Pack 20h + 1h offerte - {calculerPrix(500)}€
+                  </option>
+                  <option
+                    value={`Pack 30h + 2h offertes - ${calculerPrix(750)}€`}
+                  >
+                    Pack 30h + 2h offertes - {calculerPrix(750)}€
+                  </option>
+                  <option
+                    value={`Pack 40h + 3h offertes - ${calculerPrix(1000)}€`}
+                  >
+                    Pack 40h + 3h offertes - {calculerPrix(1000)}€
+                  </option>
+                </select>
+                <Button
+                  onClick={handlePayment(
+                    "Pack",
+                    calculerPrix(25),
+                    "Pack 10h",
+                    calculerPrix(250)
+                  )}
+                  className="shadow-md rounded-lg bg-[#752466] mx-auto transition-transform transform-gpu hover:bg-[#0072BA] hover:scale-105"
+                >
+                  Choisir
+                </Button>
+              </div>
+            </div>
             {/* Offre Company */}
             <div className="relative flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
               <div className="absolute top-0 left-0 right-0 -mt-4 w-full bg-[#F25C05] rounded-t-lg">
@@ -234,76 +304,6 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
                     Choisir
                   </Button>
                 </div>
-              </div>
-            </div>
-
-            {/* Offre Enterprise */}
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-              <h3 className="mb-4 text-2xl text-[#752466] font-semibold">
-                À LA DEMANDE
-              </h3>
-              <div className="flex justify-center items-baseline my-8">
-                <span className="mr-2 text-5xl font-extrabold">
-                  {calculerPrix(25)}€{!formData.creditImpot && "*"}
-                </span>
-                <span className="text-gray-500 dark:text-gray-400">/heure</span>
-              </div>
-              <Separator className=" mb-8 border-2 border-[#752466] bg-[#752466]" />
-              {/* Liste des fonctionnalités */}
-              <ul role="list" className="mb-8 space-y-4 text-left">
-                <li className="flex items-center space-x-3">
-                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
-                  <span>Fréquence libre</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
-                  <span>Heures valables 2 ans</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
-                  <span>Pas de frais d’inscription</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
-                  <span>Accès imusic-school offert</span>
-                </li>
-              </ul>
-              <div className="grid gap-6 mb-6 md:grid-cols-1">
-                <select
-                  name="choixFormule"
-                  onChange={handleInputChange}
-                  className="bg-gray-50 border-2 border-[#752466] text-gray-900 text-sm rounded-lg focus:ring-[#752466] focus:border-[#752466] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#752466] dark:focus:border-[#752466]"
-                >
-                  <option value={`Pack 10h - ${calculerPrix(250)}€`}>
-                    Pack 10h - {calculerPrix(250)}€
-                  </option>
-                  <option
-                    value={`Pack 20h + 1h offerte - ${calculerPrix(500)}€`}
-                  >
-                    Pack 20h + 1h offerte - {calculerPrix(500)}€
-                  </option>
-                  <option
-                    value={`Pack 30h + 2h offertes - ${calculerPrix(750)}€`}
-                  >
-                    Pack 30h + 2h offertes - {calculerPrix(750)}€
-                  </option>
-                  <option
-                    value={`Pack 40h + 3h offertes - ${calculerPrix(1000)}€`}
-                  >
-                    Pack 40h + 3h offertes - {calculerPrix(1000)}€
-                  </option>
-                </select>
-                <Button
-                  onClick={handlePayment(
-                    "Pack",
-                    calculerPrix(25),
-                    "Pack 10h",
-                    calculerPrix(250)
-                  )}
-                  className="shadow-md rounded-lg bg-[#752466] mx-auto transition-transform transform-gpu hover:bg-[#0072BA] hover:scale-105"
-                >
-                  Choisir
-                </Button>
               </div>
             </div>
           </div>
