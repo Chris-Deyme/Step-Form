@@ -59,17 +59,36 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
       <section className="bg-white dark:bg-gray-900">
         <div className="p-4 mx-auto max-w-screen-xl">
           {/* <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-12"> */}
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+          <div className="flex w-full justify-center">
+            <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               Choisissez la formule la plus adaptée à votre projet
             </h2>
-            <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+            </div>
+            <p className="mb-5 text-base font-medium text-gray-900 dark:text-gray-400">
             Vous pourrez répartir vos heures de cours selon vos préférences si vous avez inscrit plusieurs élèves. 
 Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera qu'à partir de la validation de la date du premier cours.
             </p>
-          {/* </div> */}
-          {/* <h3 className="mb-4 text-2xl font-semibold">Votre formule</h3> */}
-          {/* <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" /> */}
-          <div className="flex items-center gap-2 mb-6 mt-2">
+            <div className="grid w-full justify-center">
+              <div className="flex bg-[#F25C05] rounded-lg">
+            <h3 className="text-2xl font-semibold text-white p-4 text-center">Frais d'adhésion offerts cette semaine !</h3>
+            </div>
+            <div className="flex justify-center gap-2 mb-6 mt-2"><input
+              type="checkbox"
+              id="creditImpot"
+              name="creditImpot"
+              checked={formData.creditImpot}
+              onChange={handleCreditImpotChange}
+              className="w-4 h-4 mb-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="creditImpot"
+              className="mb-6 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Je ne souhaite pas bénéficier du crédit immédiat d’impôt
+            </label>
+            </div>
+          </div>
+          {/* <div className="flex items-center gap-2 mb-6 mt-2">
             <input
               type="checkbox"
               id="creditImpot"
@@ -84,7 +103,7 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
             >
               Je ne souhaite pas bénéficier du crédit immédiat d’impôt
             </label>
-          </div>
+          </div> */}
 
           <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
             {/* Offre Starter */}
@@ -111,7 +130,7 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#0072BA] dark:text-[#0072BA]" />
-                  <span><s>Frais d'inscriptions : 35€</s></span>
+                  <span><s>Frais d'inscriptions : {formData.creditImpot ? 70 : 35}€</s></span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#0072BA] dark:text-[#0072BA]" />
@@ -124,20 +143,20 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
                   onChange={handleInputChange}
                   className="bg-gray-50 border-2 border-[#0072BA] text-gray-900 text-sm rounded-lg focus:ring-[#0072BA] focus:border-[#0072BA] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#0072BA] dark:focus:border-[#0072BA]"
                 >
-                  <option value={`2h/mois - ${calculerPrix(60)}€/mois`}>
-                    2h/mois - {calculerPrix(60)}€/mois
+                  <option value={`1 heure - ${calculerPrix(30)}€`}>
+                    1 heure - {calculerPrix(30)}€
                   </option>
-                  <option value={`3h/mois - ${calculerPrix(90)}€/mois`}>
-                    3h/mois - {calculerPrix(90)}€/mois
+                  <option value={`2 heures - ${calculerPrix(60)}€`}>
+                    2 heures - {calculerPrix(60)}€
                   </option>
-                  <option value={`4h/mois - ${calculerPrix(120)}€/mois`}>
-                    4h/mois - {calculerPrix(120)}€/mois
+                  <option value={`3 heures - ${calculerPrix(90)}€`}>
+                    3 heures - {calculerPrix(90)}€
                   </option>
-                  <option value={`6h/mois - ${calculerPrix(180)}€/mois`}>
-                    6h/mois - {calculerPrix(180)}€/mois
+                  <option value={`4 heures - ${calculerPrix(120)}€`}>
+                    4 heures - {calculerPrix(120)}€
                   </option>
-                  <option value={`8h/mois - ${calculerPrix(240)}€/mois`}>
-                    8h/mois - {calculerPrix(240)}€/mois
+                  <option value={`5 heures - ${calculerPrix(150)}€`}>
+                    5 heures - {calculerPrix(150)}€
                   </option>
                 </select>
                 <Button
@@ -179,7 +198,7 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
-                  <span>Pas de frais d’inscription</span>
+                  <span><s>Frais d'inscriptions : {formData.creditImpot ? 70 : 35}€</s></span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#752466] dark:text-[#752466]" />
@@ -256,7 +275,7 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
                   </li>
                   <li className="flex items-center space-x-3">
                     <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#F25C05] dark:text-[#F25C05]" />
-                    <span>Pas de frais d’inscription</span>
+                    <span><s>Frais d'inscriptions : {formData.creditImpot ? 70 : 35}€</s></span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#F25C05] dark:text-[#F25C05]" />
@@ -267,6 +286,7 @@ Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera
                   <select
                     name="choixFormule"
                     onChange={handleInputChange}
+                    defaultValue={`4h/mois - ${calculerPrix(100)}€/mois`} 
                     className="bg-gray-50 border-2 border-[#F25C05] text-gray-900 text-sm rounded-lg focus:ring-[#F25C05] focus:border-[#F25C05] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#F25C05] dark:focus:border-[#F25C05]"
                   >
                     <option value={`2h/mois - ${calculerPrix(50)}€/mois`}>

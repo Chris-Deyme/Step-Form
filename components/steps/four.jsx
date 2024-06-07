@@ -77,9 +77,11 @@ export const StepFour = ({
       transition={{ duration: 0.5 }}
     >
       <div className="p-4 bg-white md:w-4/5 lg:w-1/2 xl:w-1/2 w-4/5 mx-auto">
-        <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+      <div className="flex w-full justify-center">
+        <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
           Finalisation
         </h2>
+        </div>
         {!formData.creditImpot && (
           <>
             <h3 className="mb-4 text-2xl font-semibold">

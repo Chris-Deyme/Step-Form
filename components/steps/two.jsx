@@ -139,6 +139,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
         adresse: student.adresse,
         codePostal: student.codePostal,
         ville: student.ville,
+        telephone: student.telephone
       }));
     }
   };
@@ -183,10 +184,12 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
       transition={{ duration: 0.5 }}
     >
       <div className="p-4 bg-white md:w-4/5 lg:w-1/2 xl:w-1/2 w-4/5 mx-auto">
-        <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+      <div className="flex w-full justify-center">
+        <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
           Souscripteur
         </h2>
-        <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
+        </div>
+        <p className="mb-5 text-base font-medium text-gray-900 dark:text-gray-400">
           Ces informations sont indispensables pour bénéficier du Crédit d’Impôt
           de 50%, merci de veiller à ce quelles soient identiques à celles
           connues du service des impôts.
@@ -242,7 +245,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
             {formData.students.map((student, index) => (
               <div
                 key={index}
-                className="cursor-pointer mb-2 p-2 border border-gray-300 rounded-lg hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                className="cursor-pointer mb-2 p-2 border-2 border-[#752466] shadow-md rounded-lg bg-[#FFFFFF] text-[#752466] transition-transform transform-gpu hover:bg-[#FFFFFF] hover:scale-105"
                 onClick={() => handleStudentSelect(student)}
               >
                 {selectedOption === "sameAddress" ? (
