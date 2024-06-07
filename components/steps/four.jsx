@@ -83,13 +83,13 @@ export const StepFour = ({
         {!formData.creditImpot && (
           <>
             <h3 className="mb-4 text-2xl font-semibold">
-              Avance du crédit d'impôt
+              Avance du crédit d&apos;impôt
             </h3>
             <Separator className="mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
             <p className="mb-8">
-              Pour bénéficier de l'avance immédiate du crédit d'impôt, merci de
+              Pour bénéficier de l&apos;avance immédiate du crédit d&apos;impôt, merci de
               renseigner vos coordonnées bancaires, nécessaires pour vous
-              affilier au dispositif de l'URSSAF.
+              affilier au dispositif de l&apos;URSSAF.
             </p>
 
             <div className="grid gap-6 mb-6 md:grid-cols-1">
@@ -237,7 +237,7 @@ export const StepFour = ({
                             htmlFor="card-expiration-input"
                             className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                           >
-                            Date d'expiration*{" "}
+                            Date d&apos;expiration*{" "}
                           </label>
                           <div className="relative">
                             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
@@ -416,7 +416,7 @@ export const StepFour = ({
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           Merci de nous envoyer par courrier vos chèques ou CESU
-                          à l'adresse :
+                          à l&apos;adresse :
                         </label>
                         <div className="flex font-bold flex-col gap-3">
                           <p>Évidence Cours - Fasiladom </p>{" "}
@@ -426,7 +426,7 @@ export const StepFour = ({
                         <p className="mt-4">
                           Vous pouvez également contacter le service client :{" "}
                           <br /> - contact@fasiladom.fr - 09 70 21 20 36 (prix
-                          d'un appel local)
+                          d&apos;un appel local)
                         </p>
                       </form>
                     </>
@@ -472,12 +472,12 @@ export const StepFour = ({
                           {" "}
                           Le traitement peut prendre jusqu&apos;à 48h00, nous
                           vous confirmerons leur réception et créditerons votre
-                          compte du nombre d'heures correspondant.
+                          compte du nombre d&apos;heures correspondant.
                         </p>
                       </p>
                       <p className="mt-4">
                         Vous pouvez également contacter le service client :
-                        <br />- contact@fasiladom.fr - 09 70 21 20 36 (prix d'un
+                        <br />- contact@fasiladom.fr - 09 70 21 20 36 (prix d&apos;un
                         appel local)
                       </p>
                     </div>

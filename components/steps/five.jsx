@@ -116,9 +116,9 @@ export const StepFive = ({ formData, setFormData, setCurrentStep }) => {
                 <br />
                 {formData.choixFormule}
                 {!formData.creditImpot ? (
-                  <p>Avec avance du crédit d'impôts</p>
+                  <p>Avec avance du crédit d&apos;impôts</p>
                 ) : (
-                  <p>Sans avance du crédit d'impôts</p>
+                  <p>Sans avance du crédit d&apos;impôts</p>
                 )}
                 {/* <div className="flex mt-3">
                   <p className="font-bold mr-2">Total:</p>

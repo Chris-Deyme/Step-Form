@@ -11,7 +11,6 @@ import {
 import { Separator } from "../ui/separator";
 import AsyncSelect from "react-select/async";
 import { toast } from "sonner";
-import Select from "react-select";
 import { countries } from "./options/countries";
 
 export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
@@ -189,7 +188,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
         </h2>
         <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
           Ces informations sont indispensables pour bénéficier du Crédit d’Impôt
-          de 50%, merci de veiller à ce qu'elles soient identiques à celles
+          de 50%, merci de veiller à ce quelles soient identiques à celles
           connues du service des impôts.
         </p>
         <h3 className="mb-4 text-2xl font-semibold">Votre identité</h3>
@@ -213,7 +212,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="sameAddress"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Même adresse que l'élève ?
+              Même adresse que l&apos;élève ?
             </label>
           </div>
           <div className="flex items-center mb-4">
@@ -230,7 +229,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="sameIdentity"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Je suis l'élève?
+              Je suis l&apos;élève?
             </label>
           </div>
         </div>
@@ -567,7 +566,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="flex justify-between m-6">
+        <div className="flex justify-between pb-10 m-6">
           <Button
             type="button"
             onClick={onBack}

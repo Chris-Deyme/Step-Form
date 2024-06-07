@@ -436,7 +436,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                 <AccordionContent>
                   <div className="bg-white p-4">
                     <h3 className="mb-4 text-2xl font-semibold">
-                      Profil de l'élève
+                      Profil de l&apos;élève
                     </h3>
                     <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
 
@@ -627,7 +627,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                     </div>
 
                     <h3 className="mb-4 text-2xl font-semibold">
-                      Adresse et contact de l'élève
+                      Adresse et contact de l&apos;élève
                     </h3>
                     <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
 
@@ -651,7 +651,6 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           type="addressName"
                           id="addressName"
                           name="addressName"
-                          disabled
                           value={student.adresse}
                           onChange={(e) =>
                             updateStudent(index, { adresse: e.target.value })
@@ -669,7 +668,6 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           type="codePostal"
                           id="codePostal"
                           name="codePostal"
-                          disabled
                           value={student.codePostal}
                           onChange={(e) =>
                             updateStudent(index, { codePostal: e.target.value })
@@ -692,7 +690,6 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                           type="text"
                           id="ville"
                           name="ville"
-                          disabled
                           value={student.ville}
                           onChange={(e) =>
                             updateStudent(index, { ville: e.target.value })
@@ -732,7 +729,7 @@ export const StepOne = ({ onNext, formData, setFormData }) => {
                     <p className="mb-8">
                       Information indicative qui nous permet d’affiner notre
                       sélection de professeurs. Pourra être ajusté après
-                      l'inscription.
+                      l&apos;inscription.
                     </p>
                     <div className="grid gap-6 mb-6 md:grid-cols-4">
                       <div>
