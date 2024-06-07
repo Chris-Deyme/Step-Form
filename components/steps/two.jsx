@@ -196,7 +196,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
 
         <div className="mb-4">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Choisissez une option:
+            Pour vous facilitez la saisie :
           </label>
           <div className="flex items-center mb-2">
             <input
@@ -212,7 +212,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="sameAddress"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Même adresse que l&apos;élève ?
+              Je réside à la même adresse que l&apos;élève
             </label>
           </div>
           <div className="flex items-center mb-4">
@@ -229,7 +229,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="sameIdentity"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Je suis l&apos;élève?
+              Je suis l&apos;élève
             </label>
           </div>
         </div>
@@ -237,7 +237,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
         {selectedOption && (
           <div className="mb-6 flex items-center gap-5">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Sélectionnez un étudiant :
+              Sélectionnez un élève :
             </label>
             {formData.students.map((student, index) => (
               <div
@@ -340,7 +340,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
               htmlFor="nomNaissance"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Nom de naissance :
+              Nom de naissance (renseigner même si identique) :
             </label>
             <input
               name="nomNaissance"
@@ -409,7 +409,7 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
           </div>
         </div>
 
-        <h3 className="mb-4 text-2xl font-semibold">Votre adresse</h3>
+        <h3 className="mb-4 text-2xl font-semibold">Votre adresse fiscale</h3>
         <Separator className="mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
 
         <AsyncSelect
@@ -545,22 +545,6 @@ export const StepTwo = ({ onNext, onBack, formData, setFormData }) => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Nom de la famille"
                   />
-                </div>
-                <div className="flex items-center mb-4">
-                  <input
-                    type="checkbox"
-                    id="pasParraine"
-                    name="pasParraine"
-                    checked={formData.pasParraine}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    htmlFor="pasParraine"
-                    className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Je ne suis pas parrainé
-                  </label>
                 </div>
               </div>
             </AccordionContent>

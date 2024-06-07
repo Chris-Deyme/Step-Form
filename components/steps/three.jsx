@@ -64,11 +64,11 @@ export const StepThree = ({ onNext, onBack, formData, setFormData }) => {
             </h2>
             <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">
             Vous pourrez répartir vos heures de cours selon vos préférences si vous avez inscrit plusieurs élèves. 
-Ce choix est uniquement informatif à ce stade; le prélèvement ne s'effectuera qu'à partir de la validation de la date du premier cours.
+Ce choix est uniquement informatif à ce stade, le prélèvement ne s'effectuera qu'à partir de la validation de la date du premier cours.
             </p>
           {/* </div> */}
-          <h3 className="mb-4 text-2xl font-semibold">Votre formule</h3>
-          <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" />
+          {/* <h3 className="mb-4 text-2xl font-semibold">Votre formule</h3> */}
+          {/* <Separator className=" mb-8 border-2 border-[#F25C05] bg-[#F25C05]" /> */}
           <div className="flex items-center gap-2 mb-6 mt-2">
             <input
               type="checkbox"
@@ -111,7 +111,7 @@ Ce choix est uniquement informatif à ce stade; le prélèvement ne s'effectuera
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#0072BA] dark:text-[#0072BA]" />
-                  <span>Pas de frais d’inscription</span>
+                  <span><s>Frais d'inscriptions : 35€</s></span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CiCircleCheck className="flex-shrink-0 w-5 h-5 text-[#0072BA] dark:text-[#0072BA]" />
